@@ -1,0 +1,263 @@
+﻿/* Particles wrapper — NOT a flex item */
+.particlesBg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/*  Hero Section  */
+.heroSection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 90vh;
+  padding: 0 5vw 0 5vw;
+  position: relative; /* anchors absolute NeonParticles canvas */
+  overflow: hidden; /* keeps particles clipped inside section */
+}
+
+/* Reset global neon text-shadow on h1 inside hero */
+.heroSection h1 {
+  text-shadow: none;
+  color: #fff;
+  text-align: left;
+  margin: 0;
+}
+
+/*  Left content  */
+.heroContent {
+  position: relative;
+  z-index: 10; /* sits above canvas z-index:0 */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* keep every child left-aligned */
+  gap: 2rem;
+  margin-top: -4rem; /* shift left block upward to leave room for tech stack */
+  max-width: 580px;
+  text-align: left;
+}
+
+.greeting {
+  color: #7dd3fc;
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-shadow: 0 0 8px rgba(125, 211, 252, 0.3);
+  display: block;
+}
+
+.name {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: #fff;
+  display: block;
+  margin-top: 0.25rem;
+}
+
+/* Soft purple accent on name instead of full neon blast */
+.neon {
+  color: #a78bfa;
+  text-shadow: 0 0 8px rgba(167, 139, 250, 0.35);
+}
+
+.subtitle {
+  font-size: 1.45rem;
+  color: #e2e8f0;
+  font-weight: 500;
+  min-height: 2rem; /* prevent layout jump while typing */
+}
+
+.neonPink {
+  color: #f472b6;
+  text-shadow: 0 0 5px rgba(244, 114, 182, 0.35);
+}
+
+/* CSS-driven blinking cursor — no JS state needed */
+.cursor {
+  color: #f472b6;
+  font-weight: 300;
+  animation: cursorBlink 1s step-end infinite;
+}
+
+@keyframes cursorBlink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/*  CTA button  */
+.ctaBtn {
+  display: inline-block;
+  background: linear-gradient(135deg, #7dd3fc 0%, #a78bfa 100%);
+  color: #0a0a0f;
+  border: none;
+  border-radius: 30px;
+  padding: 0.75em 2em;
+  font-size: 1.05em;
+  font-family: 'Orbitron', 'Segoe UI', 'Roboto', Arial, sans-serif;
+  font-weight: 700;
+  text-shadow: none;
+  box-shadow: 0 0 10px rgba(125, 211, 252, 0.25);
+  cursor: pointer;
+  transition:
+    box-shadow 0.25s ease,
+    transform 0.2s ease;
+  align-self: flex-start; /* keep left-aligned, don't stretch */
+}
+
+.ctaBtn:hover {
+  box-shadow:
+    0 0 20px rgba(52, 211, 153, 0.45),
+    0 0 40px rgba(52, 211, 153, 0.2);
+  color: #0a0a0f;
+}
+
+.ctaIcon {
+  font-size: 1em;
+  margin-left: 0.4em;
+}
+
+/* CTA row: About Me button + social icons side by side */
+.ctaRow {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+/* ── Tech Stack ──────────────────────────────────────────── */
+.techStack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.techLabel {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(125, 211, 252, 0.55);
+  margin: 0;
+}
+
+.techIcons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  max-width: 520px;
+}
+
+.techIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 1.3rem;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+  cursor: default;
+}
+
+.techIcon:hover {
+  transform: translateY(-3px) scale(1.12);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.socialIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(125, 211, 252, 0.08);
+  border: 1.5px solid rgba(125, 211, 252, 0.25);
+  color: #7dd3fc;
+  font-size: 1.2rem;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+  text-decoration: none;
+}
+
+.socialIcon:hover {
+  background: rgba(125, 211, 252, 0.18);
+  border-color: #7dd3fc;
+  color: #fff;
+  box-shadow: 0 0 12px rgba(125, 211, 252, 0.35);
+  text-shadow: none;
+}
+
+/*  Right side: profile image  */
+.heroImageOuter {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-right: 4vw;
+}
+
+/* Inner div — receives rAF parallax + float transform directly */
+.heroImageWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 380px;
+  height: 380px;
+  background: rgba(20, 20, 40, 0.55);
+  border-radius: 50%;
+  box-shadow:
+    0 0 24px 4px rgba(125, 211, 252, 0.12),
+    0 0 60px 10px rgba(167, 139, 250, 0.07);
+  will-change: transform; /* hint browser for smooth rAF animation */
+}
+
+.heroImage {
+  width: 350px;
+  height: 350px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid rgba(125, 211, 252, 0.35);
+  box-shadow: 0 0 16px 2px rgba(125, 211, 252, 0.15);
+  pointer-events: none; /* prevent img drag from disrupting parallax */
+}
+
+/*  Responsive  */
+@media (max-width: 900px) {
+  .heroSection {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3rem;
+    min-height: 80vh;
+    padding: 4rem 6vw 3rem;
+  }
+
+  .heroImageOuter {
+    align-self: center;
+  }
+
+  .heroImageWrap {
+    width: 260px;
+    height: 260px;
+  }
+
+  .heroImage {
+    width: 235px;
+    height: 235px;
+  }
+}

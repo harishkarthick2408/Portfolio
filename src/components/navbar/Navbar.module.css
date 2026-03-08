@@ -1,0 +1,142 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4vw;
+  height: 64px;
+  background: rgba(10, 10, 15, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(125, 211, 252, 0.08);
+  transition: background 0.3s ease;
+}
+
+/* Slightly more opaque on scroll */
+.navbar.scrolled {
+  background: rgba(10, 10, 15, 0.82);
+}
+
+/* Left: name */
+.brand {
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #f4f4f4;
+  text-transform: uppercase;
+  text-decoration: none;
+  text-shadow: none;
+  white-space: nowrap;
+}
+
+.brand:hover {
+  color: #7dd3fc;
+  text-shadow: 0 0 8px rgba(125, 211, 252, 0.4);
+}
+
+/* Right: nav links */
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navLinks li a {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  padding-bottom: 4px;
+  border-bottom: 2px solid transparent;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.navLinks li a:hover {
+  color: #7dd3fc;
+  border-bottom-color: #7dd3fc;
+  text-shadow: none;
+}
+
+.navLinks li a.active {
+  color: #7dd3fc;
+  border-bottom-color: #7dd3fc;
+}
+
+/* Mobile hamburger — hidden on desktop */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 4px;
+}
+
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: #cbd5e1;
+  border-radius: 2px;
+  transition:
+    transform 0.25s ease,
+    opacity 0.25s ease;
+}
+
+/* Mobile menu */
+.mobileMenu {
+  display: none;
+  flex-direction: column;
+  gap: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem 0;
+  background: rgba(10, 10, 15, 0.96);
+  position: absolute;
+  top: 64px;
+  left: 0;
+  right: 0;
+  border-top: 1px solid rgba(125, 211, 252, 0.1);
+}
+
+.mobileMenu.open {
+  display: flex;
+}
+
+.mobileMenu li a {
+  display: block;
+  padding: 0.75rem 4vw;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  text-decoration: none;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+.mobileMenu li a:hover {
+  color: #7dd3fc;
+  background: rgba(125, 211, 252, 0.06);
+}
+
+@media (max-width: 768px) {
+  .navLinks {
+    display: none;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+}
