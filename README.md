@@ -1,4 +1,23 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Harish Karthick – Developer Portfolio
+
+A modern, professional developer portfolio built with Next.js (App Router), TypeScript, Tailwind CSS, Framer Motion, tsParticles, and React Icons. Features a dark futuristic theme, glassmorphism, glowing borders, interactive animations, and premium UI effects.
+
+## Features
+- Dark futuristic theme with neon blue/cyan and purple gradients
+- Glassmorphism cards, glowing borders, and whitespace
+- Responsive for desktop, tablet, and mobile
+- Hero, About, Skills, Projects, Experience, Contact, Footer sections
+- Particle background (tsParticles), Framer Motion animations, magnetic buttons, parallax, and more
+- Ready for Vercel deployment
+
+## Tech Stack
+- Next.js (App Router)
+- TypeScript
+- Tailwind CSS
+- Framer Motion
+- tsParticles
+- React Icons
+- (Optional) React Three Fiber / Three.js
 
 ## Getting Started
 
