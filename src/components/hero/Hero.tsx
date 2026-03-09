@@ -17,7 +17,7 @@ import {
   SiPostgresql,
   SiRedis,
   SiFirebase,
-  SiGooglecloud,
+  SiNextdotjs,
   SiGit,
   SiGithub,
   SiDocker,
@@ -42,7 +42,7 @@ const techStack = [
   { icon: SiFirebase, label: 'Firebase', color: '#FFCA28' },
   { icon: TbBrandAws, label: 'AWS', color: '#FF9900' },
   { icon: TbBrandAzure, label: 'Azure', color: '#0078D4' },
-  { icon: SiGooglecloud, label: 'Google Cloud', color: '#4285F4' },
+  { icon: SiNextdotjs, label: 'Next.js', color: '#ffffff' },
   { icon: SiGit, label: 'Git', color: '#F05032' },
   { icon: SiGithub, label: 'GitHub', color: '#ffffff' },
   { icon: SiDocker, label: 'Docker', color: '#2496ED' },
@@ -144,7 +144,7 @@ export default function Hero() {
   useParallaxFloating(profileRef as React.RefObject<HTMLDivElement>);
 
   return (
-    <section className={styles.heroSection}>
+    <section id="home" className={styles.heroSection}>
       {/* Particles wrapper — position:absolute takes it out of the flex flow */}
       <div className={styles.particlesBg}>
         <NeonParticles />

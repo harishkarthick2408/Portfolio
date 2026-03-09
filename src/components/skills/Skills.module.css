@@ -1,0 +1,178 @@
+.section {
+  position: relative;
+  background: #0b0f19;
+  padding: 100px 2rem;
+  overflow: hidden;
+}
+
+/* ─── HEADER ─────────────────────────────────────────── */
+.headerWrap {
+  max-width: 1100px;
+  margin: 0 auto 3.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-size: 0.82rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #93c5fd;
+  font-weight: 600;
+  opacity: 0.8;
+}
+
+.heading {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  color: #f1f5f9;
+  margin: 0;
+  line-height: 1.1;
+}
+
+.accent {
+  background: linear-gradient(90deg, #60a5fa, #818cf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── CATEGORY CARDS ─────────────────────────────────── */
+.categories {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.8rem;
+  align-items: start;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(148, 163, 184, 0.1);
+  border-radius: 14px;
+  padding: 2rem 1.8rem;
+  transition:
+    border-color 0.3s,
+    box-shadow 0.3s;
+  height: 100%;
+}
+
+.card:hover {
+  border-color: rgba(96, 165, 250, 0.2);
+  box-shadow: 0 4px 24px rgba(96, 165, 250, 0.06);
+}
+
+.cardHeader {
+  margin-bottom: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.cardTitle {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #e2e8f0;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.cardSub {
+  font-size: 0.72rem;
+  color: #64748b;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ─── ICON PILLS (technical & tools) ────────────────── */
+.pillGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.65rem;
+}
+
+.pill {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  cursor: default;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+  min-width: 0;
+}
+
+.pill:hover {
+  background: rgba(96, 165, 250, 0.09);
+  border-color: rgba(96, 165, 250, 0.28);
+}
+
+.pillIcon {
+  font-size: 1.15rem;
+  flex-shrink: 0;
+}
+
+.pillName {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #cbd5e1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ─── SOFT SKILL PILLS ───────────────────────────────── */
+.softGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.65rem;
+}
+
+.softPill {
+  padding: 0.5rem 0.9rem;
+  border-radius: 8px;
+  background: rgba(129, 140, 248, 0.08);
+  border: 1px solid rgba(129, 140, 248, 0.2);
+  color: #a5b4fc;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-align: center;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+  cursor: default;
+}
+
+.softPill:hover {
+  background: rgba(129, 140, 248, 0.16);
+  border-color: rgba(129, 140, 248, 0.4);
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────────── */
+@media (max-width: 900px) {
+  .categories {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .section {
+    padding: 70px 1.2rem;
+  }
+
+  .card {
+    padding: 1.4rem 1.2rem;
+  }
+
+  .cardHeader {
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+}

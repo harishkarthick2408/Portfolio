@@ -7,8 +7,8 @@ const navLinks = [
   { label: 'About', href: '#about' },
   { label: 'Skills', href: '#skills' },
   { label: 'Education', href: '#education' },
-  { label: 'Work', href: '#work' },
-  { label: 'Experience', href: '#experience' },
+  { label: 'Projects', href: '#projects' },
+  // { label: 'Experience', href: '#experience' },
   { label: 'Contact', href: '#contact' },
 ];
 
@@ -36,13 +36,22 @@ export default function Navbar() {
         ([entry]) => {
           if (entry.isIntersecting) setActive(id);
         },
-        { threshold: 0.4 },
+        { rootMargin: '-10% 0px -85% 0px', threshold: 0 },
       );
       obs.observe(el);
       observers.push(obs);
     });
 
-    return () => observers.forEach((o) => o.disconnect());
+    // Fallback: if scrolled to very top, always highlight Home
+    const onScroll = () => {
+      if (window.scrollY < 100) setActive('home');
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    return () => {
+      observers.forEach((o) => o.disconnect());
+      window.removeEventListener('scroll', onScroll);
+    };
   }, []);
 
   const handleLinkClick = (href: string) => {

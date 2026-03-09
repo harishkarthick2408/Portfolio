@@ -1,0 +1,195 @@
+.section {
+  position: relative;
+  min-height: 100vh;
+  background: #0b0f19;
+  display: flex;
+  align-items: center;
+  padding: 100px 0;
+  overflow: hidden;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  gap: 5rem;
+  width: 100%;
+  justify-content: flex-start;
+}
+
+/* ─── RIGHT CONTENT ─────────────────────────────────── */
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-left: 10rem;
+}
+
+.label {
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #93c5fd;
+  font-weight: 600;
+  opacity: 0.8;
+}
+
+.heading {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  color: #f1f5f9;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.accent {
+  background: linear-gradient(90deg, #60a5fa, #818cf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.bio {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #8b9ab3;
+  margin: 0;
+}
+
+/* ─── RESUME BUTTON ──────────────────────────────────── */
+.resumeBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.6rem;
+  border-radius: 6px;
+  border: 1px solid rgba(96, 165, 250, 0.4);
+  background: rgba(96, 165, 250, 0.08);
+  color: #93c5fd;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  transition:
+    background 0.25s,
+    border-color 0.25s,
+    color 0.25s;
+  width: fit-content;
+}
+
+.resumeBtn:hover {
+  background: rgba(96, 165, 250, 0.18);
+  border-color: rgba(96, 165, 250, 0.7);
+  color: #bfdbfe;
+}
+
+/* ─── STATS ROW ──────────────────────────────────────── */
+.stats {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 0.5rem;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.statNumber {
+  font-size: 2rem;
+  font-weight: 800;
+  background: linear-gradient(90deg, #60a5fa, #818cf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+
+.statLabel {
+  font-size: 0.78rem;
+  color: #6b7a99;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.statDivider {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, transparent, #334155, transparent);
+}
+
+/* ─── LEFT — PHOTO ─────────────────────────────────── */
+.photoWrapper {
+  flex-shrink: 0;
+  position: relative;
+  width: 340px;
+  margin-left: -2rem;
+}
+
+.photoFrame {
+  position: relative;
+  width: 340px;
+  height: 340px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 2px solid rgba(148, 163, 184, 0.18);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.35),
+    0 0 18px rgba(96, 165, 250, 0.07);
+}
+
+.photo {
+  object-fit: cover;
+  object-position: center top;
+}
+
+/* decorative corner accents */
+.corner {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  pointer-events: none;
+}
+
+.cornerTL {
+  top: -6px;
+  left: -6px;
+  border-top: 2px solid #60a5fa;
+  border-left: 2px solid #60a5fa;
+  border-radius: 2px 0 0 0;
+}
+
+.cornerBR {
+  bottom: -6px;
+  right: -6px;
+  border-bottom: 2px solid #818cf8;
+  border-right: 2px solid #818cf8;
+  border-radius: 0 0 2px 0;
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────────── */
+@media (max-width: 900px) {
+  .container {
+    flex-direction: column-reverse;
+    gap: 3rem;
+    text-align: center;
+  }
+
+  .photoWrapper {
+    width: 260px;
+  }
+
+  .photoFrame {
+    width: 260px;
+    height: 260px;
+  }
+
+  .stats {
+    justify-content: center;
+  }
+}
