@@ -1,8 +1,8 @@
 export type Project = {
   title: string;
-  image: string;
+  tagline: string;
+  logo: string;
   description: string;
   tech: string[];
-  github: string;
-  demo: string;
+  visit: string;
 };
