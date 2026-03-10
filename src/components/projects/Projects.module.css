@@ -113,12 +113,12 @@
   height: 170px;
   flex-shrink: 0;
   overflow: hidden;
-  background: #1a2a4a;
+  background: #111827;
   border-radius: 0;
 }
 
 .bannerImg {
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
 }
 

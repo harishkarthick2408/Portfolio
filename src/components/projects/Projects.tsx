@@ -28,6 +28,7 @@ function Card({
   onHintMouseEnter,
   onHintMouseLeave,
   cardWidth,
+  offsetIndex,
   staticRender,
 }: {
   project: (typeof projects)[0];
@@ -42,6 +43,7 @@ function Card({
   onHintMouseEnter: () => void;
   onHintMouseLeave: () => void;
   cardWidth: number;
+  offsetIndex: -1 | 0 | 1;
   staticRender?: boolean;
 }) {
   const [logoError, setLogoError] = useState(false);
@@ -76,11 +78,8 @@ function Card({
     return Math.max(0.45, 1 - Math.min(dist, 1) * 0.55);
   });
 
-  const diff = mod(slotIndex - active, totalSlots);
-  const isCenter = diff === 0;
-  const isRight = !isCenter && diff <= Math.floor(totalSlots / 2);
-  const arrowDir = isCenter ? null : isRight ? 'right' : 'left';
-  const clickFn = isCenter ? undefined : isRight ? goNext : goPrev;
+  const isCenter = offsetIndex === 0;
+  const clickFn = isCenter ? undefined : offsetIndex === 1 ? goNext : goPrev;
 
   // ── Mobile static path (after all hooks) ──────────────────
   if (staticRender) {
@@ -94,6 +93,12 @@ function Card({
               fill
               sizes="100vw"
               className={styles.bannerImg}
+              style={{
+                objectFit: project.bannerFit ?? 'contain',
+                padding: project.bannerPadding ?? '8px',
+                transform: project.bannerScale ? `scale(${project.bannerScale})` : undefined,
+                transformOrigin: 'center',
+              }}
               onError={() => setLogoError(true)}
             />
           ) : (
@@ -149,7 +154,7 @@ function Card({
       {/* Side card hover hint — JS-controlled, never shown during animation */}
       {!isCenter && showHint && (
         <div className={styles.clickHint} aria-hidden="true">
-          {arrowDir === 'left' ? '‹' : '›'}
+          {offsetIndex === -1 ? '‹' : '›'}
         </div>
       )}
       {/* Banner */}
@@ -161,6 +166,12 @@ function Card({
             fill
             sizes="420px"
             className={styles.bannerImg}
+            style={{
+              objectFit: project.bannerFit ?? 'contain',
+              padding: project.bannerPadding ?? '8px',
+              transform: project.bannerScale ? `scale(${project.bannerScale})` : undefined,
+              transformOrigin: 'center',
+            }}
             onError={() => setLogoError(true)}
           />
         ) : (
@@ -223,6 +234,7 @@ export default function Projects() {
   const trackX = useMotionValue(0);
   const fadeOpacity = useMotionValue(1);
   const animating = useRef(false);
+  const idleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   // cumulative slide count — trackX = -slideCount * UNIT always
   const slideCount = useRef(0);
   const touchStartX = useRef<number>(0);
@@ -237,12 +249,18 @@ export default function Projects() {
     return () => window.removeEventListener('resize', measure);
   }, []);
 
+  useEffect(() => {
+    return () => {
+      if (idleTimer.current) clearTimeout(idleTimer.current);
+    };
+  }, []);
+
   const goTo = useCallback(
     (newActive: number, step: 1 | -1) => {
       if (animating.current) return;
-      animating.current = true;
-      setIsIdle(false);
       setHoveredSlot(null);
+      setIsIdle(false);
+      animating.current = true;
 
       const target = mod(newActive, total);
 
@@ -276,8 +294,11 @@ export default function Projects() {
             trackX.set(-slideCount.current * UNIT);
           }
           setActive(target);
-          animating.current = false;
-          setIsIdle(true);
+          if (idleTimer.current) clearTimeout(idleTimer.current);
+          idleTimer.current = setTimeout(() => {
+            animating.current = false;
+            setIsIdle(true);
+          }, 150);
         },
       });
     },
@@ -362,34 +383,42 @@ export default function Projects() {
                   onHintMouseEnter={() => {}}
                   onHintMouseLeave={() => {}}
                   cardWidth={mobileCardW}
+                  offsetIndex={0}
                   staticRender
                 />
               </motion.div>
             ) : (
-              // ── Desktop: full 3-card carousel ─────────────
-              projects.map((project, i) => {
-                const diff = mod(i - active, total);
-                const isCenter = diff === 0;
-                const isRight = !isCenter && diff <= Math.floor(total / 2);
-                const slotDir = isCenter ? null : isRight ? 'right' : 'left';
-                return (
-                  <Card
-                    key={i}
-                    project={project}
-                    slotIndex={i}
-                    trackX={trackX}
-                    containerWidth={containerWidth}
-                    totalSlots={total}
-                    active={active}
-                    goNext={goNext}
-                    goPrev={goPrev}
-                    showHint={isIdle && hoveredSlot === slotDir}
-                    onHintMouseEnter={() => slotDir && setHoveredSlot(slotDir)}
-                    onHintMouseLeave={() => setHoveredSlot(null)}
-                    cardWidth={mobileCardW}
-                  />
-                );
-              })
+              // ── Desktop: 3 explicit slot-keyed cards ──────
+              // Keyed by visual slot ('slot-left' etc.) so hover
+              // handlers are always tied to position, not project.
+              [
+                { key: 'slot-left', offsetIndex: -1 as const, idx: mod(active - 1, total) },
+                { key: 'slot-center', offsetIndex: 0 as const, idx: active },
+                { key: 'slot-right', offsetIndex: 1 as const, idx: mod(active + 1, total) },
+              ].map(({ key, offsetIndex, idx }) => (
+                <Card
+                  key={key}
+                  project={projects[idx]}
+                  slotIndex={idx}
+                  trackX={trackX}
+                  containerWidth={containerWidth}
+                  totalSlots={total}
+                  active={active}
+                  goNext={goNext}
+                  goPrev={goPrev}
+                  showHint={
+                    isIdle &&
+                    hoveredSlot ===
+                      (offsetIndex === -1 ? 'left' : offsetIndex === 1 ? 'right' : null)
+                  }
+                  onHintMouseEnter={() =>
+                    isIdle && setHoveredSlot(offsetIndex === -1 ? 'left' : 'right')
+                  }
+                  onHintMouseLeave={() => setHoveredSlot(null)}
+                  cardWidth={mobileCardW}
+                  offsetIndex={offsetIndex}
+                />
+              ))
             ))}
         </div>
       </div>

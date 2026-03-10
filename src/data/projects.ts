@@ -5,6 +5,9 @@ export const projects: Project[] = [
     title: 'TrackBuddy',
     tagline: 'Fleet Tracking & Management Platform',
     logo: '/images/Trackbuddy.png',
+    bannerFit: 'contain',
+    bannerScale: 1.5,
+    bannerPadding: '4px',
     description:
       'TrackBuddy is a fleet tracking and management platform designed to monitor vehicle locations, routes, and operational data in real time. It integrates GPS tracker data with a scalable backend to process and store location updates efficiently, providing route monitoring, fleet status management, and optimized data handling.',
     tech: [
@@ -25,6 +28,8 @@ export const projects: Project[] = [
     title: 'HostelOps',
     tagline: 'Complaint Management Platform',
     logo: '/images/HostelOps.png',
+    bannerFit: 'contain',
+    bannerPadding: '8px',
     description:
       'HostelOps is a full-stack complaint management platform built to simplify hostel maintenance workflows. Students can submit complaints across categories like electrical, carpentry, cleaning, mess, and amenities, while administrators track status and manage tasks through a role-based dashboard.',
     tech: ['React', 'Node.js', 'Express', 'MongoDB', 'JWT', 'Postman', 'GitHub', 'VS Code'],
@@ -34,6 +39,8 @@ export const projects: Project[] = [
     title: 'AutoTrust',
     tagline: 'Vehicle Authenticity Verification',
     logo: '/images/Autotrust.png',
+    bannerFit: 'contain',
+    bannerPadding: '12px',
     description:
       'AutoTrust is a web-based vehicle authenticity verification platform designed to detect potential fraud in used car transactions. It analyzes vehicle age, mileage, ownership records, and service history, cross-checking data to identify inconsistencies and improve trust in the used vehicle marketplace.',
     tech: [
