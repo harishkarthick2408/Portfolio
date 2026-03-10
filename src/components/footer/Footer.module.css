@@ -156,6 +156,20 @@
 }
 
 /* ── Responsive ── */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .footer {
+    padding: 40px 40px 20px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+}
+
+/* Mobile */
 @media (max-width: 768px) {
   .footer {
     padding: 50px 1.5rem 28px;
@@ -164,9 +178,47 @@
   .grid {
     grid-template-columns: 1fr;
     gap: 2rem;
+    text-align: center;
   }
 
   .brandDesc {
     max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .col {
+    align-items: center;
+  }
+
+  .linkList {
+    align-items: center;
+  }
+
+  .contactList li {
+    justify-content: center;
+  }
+
+  .socials {
+    justify-content: center;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+  .footer {
+    padding: 40px 1.25rem 24px;
+  }
+
+  .brand {
+    font-size: 15px;
+  }
+
+  .colHeading {
+    font-size: 11px;
+  }
+
+  .link,
+  .contactList li {
+    font-size: 11px;
   }
 }

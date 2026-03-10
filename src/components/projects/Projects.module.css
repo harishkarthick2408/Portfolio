@@ -48,107 +48,35 @@
   padding: 10px 0;
 }
 
-/* ─── ARROW BUTTONS ──────────────────────────────────── */
-.arrowBtn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  border: none;
-  background: #0d0d14 !important;
-  color: #fff !important;
+/* ─── SIDE CARD CLICK-TO-NAVIGATE ───────────────────── */
+.sideCard {
   cursor: pointer;
+  transition: filter 0.25s ease;
+}
+
+.sideCard:hover {
+  filter: brightness(1.22);
+}
+
+/* ─── HOVER HINT (‹ / ›) — visibility fully JS-controlled ── */
+.clickHint {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 20;
-  box-shadow:
-    0 0 0 2px rgba(124, 58, 237, 0.6),
-    0 4px 20px rgba(124, 58, 237, 0.4) !important;
-  text-shadow: none !important;
-  transition:
-    transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-    box-shadow 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.arrowBtnLeft {
-  left: -10rem;
-}
-.arrowBtnRight {
-  right: -10rem;
-}
-
-.arrowBtn:hover {
-  background: #0d0d14 !important;
-  color: #fff !important;
-  text-shadow: none !important;
-  box-shadow:
-    0 0 0 2px rgba(124, 58, 237, 1),
-    0 8px 32px rgba(124, 58, 237, 0.75) !important;
-  transform: translateY(-50%) scale(1.1);
-}
-
-.arrowBtn:active {
-  background: #0d0d14 !important;
-  transform: translateY(-50%) scale(0.95);
-}
-
-/* SVG arrow idle pulse */
-@keyframes arrowPulse {
-  0%,
-  100% {
-    opacity: 0.55;
-  }
-  50% {
-    opacity: 1;
-  }
-}
-
-.arrowSvg {
-  animation: arrowPulse 2.5s ease-in-out infinite;
-  transition: transform 0.1s ease;
-}
-
-/* Hover nudge — left button */
-@keyframes nudgeLeft {
-  0% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(-4px);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
-/* Hover nudge — right button */
-@keyframes nudgeRight {
-  0% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(4px);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
-.arrowBtnLeft:hover .arrowSvg {
-  animation: nudgeLeft 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-}
-
-.arrowBtnRight:hover .arrowSvg {
-  animation: nudgeRight 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-}
-
-/* Click press */
-.arrowBtn:active .arrowSvg {
-  transform: scale(0.8);
-  transition: transform 0.1s ease;
+  border-radius: 20px;
+  font-size: 4rem;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1;
+  user-select: none;
+  pointer-events: none;
+  background: rgba(124, 58, 237, 0.1);
+  text-shadow:
+    0 0 16px rgba(124, 58, 237, 0.9),
+    0 0 32px rgba(124, 58, 237, 0.5);
 }
 
 /* ─── CAROUSEL VIEWPORT ──────────────────────────────── */
@@ -324,6 +252,16 @@
   transform: translateX(4px);
 }
 
+/* ─── SWIPE HINT (mobile only) ──────────────────────── */
+.swipeHint {
+  display: none;
+  text-align: center;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.3);
+  margin: 0 0 8px;
+  letter-spacing: 0.5px;
+}
+
 /* ─── DOTS ───────────────────────────────────────────── */
 .dots {
   display: flex;
@@ -351,45 +289,93 @@
 }
 
 /* ─── RESPONSIVE ─────────────────────────────────────── */
-@media (max-width: 768px) {
-  .arrowBtnLeft {
-    left: 0.25rem;
-  }
-  .arrowBtnRight {
-    right: 0.25rem;
-  }
 
-  .carouselViewport {
-    height: 550px;
-  }
-
-  .card {
-    height: 530px;
-  }
-
-  .cardBanner {
-    height: 170px;
+/* Tablet */
+@media (max-width: 1024px) {
+  .section {
+    padding: 60px 1.5rem 80px;
   }
 }
 
-@media (max-width: 640px) {
-  .section {
-    padding: 70px 1rem 100px;
+/* Mobile */
+@media (max-width: 768px) {
+  .swipeHint {
+    display: block;
   }
 
-  .arrowBtn {
-    width: 42px;
-    height: 42px;
+  .section {
+    overflow-x: hidden;
+    padding: 60px 1.25rem 80px;
+  }
+
+  .carouselOuter {
+    overflow: hidden;
+    padding: 0;
   }
 
   .carouselViewport {
-    height: 530px;
+    overflow: hidden;
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Fade wrapper for mobile single-card view */
+  .mobileCardWrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  /* Mobile card: static flow, not absolute */
+  .mobileCard {
+    position: relative !important;
+    width: calc(100vw - 48px);
+    max-width: 380px;
+    height: auto;
+  }
+
+  .clickHint {
+    font-size: 3rem;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+  .section {
+    padding: 60px 1rem 80px;
+  }
+
+  .carouselViewport {
+    height: 520px;
   }
 
   .card {
-    height: 510px;
+    height: 500px;
   }
 
+  .cardBanner {
+    height: 150px;
+  }
+
+  .cardTitle {
+    font-size: 1.1rem;
+  }
+
+  .cardDesc {
+    font-size: 0.82rem;
+  }
+
+  .clickHint {
+    font-size: 2.5rem;
+  }
+}
+
+/* Legacy 640px breakpoint */
+@media (max-width: 640px) {
   .cardBanner {
     height: 160px;
   }

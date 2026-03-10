@@ -21,15 +21,33 @@ function Card({
   trackX,
   containerWidth,
   totalSlots,
+  active,
+  goNext,
+  goPrev,
+  showHint,
+  onHintMouseEnter,
+  onHintMouseLeave,
+  cardWidth,
+  staticRender,
 }: {
   project: (typeof projects)[0];
   slotIndex: number;
   trackX: MotionValue<number>;
   containerWidth: number;
   totalSlots: number;
+  active: number;
+  goNext: () => void;
+  goPrev: () => void;
+  showHint: boolean;
+  onHintMouseEnter: () => void;
+  onHintMouseLeave: () => void;
+  cardWidth: number;
+  staticRender?: boolean;
 }) {
   const [logoError, setLogoError] = useState(false);
-  const cx = containerWidth / 2 - CARD_W / 2;
+
+  // ── All hooks must be called unconditionally (Rules of Hooks) ──
+  const cx = containerWidth / 2 - cardWidth / 2;
   const totalWidth = totalSlots * UNIT;
 
   const x = useTransform(trackX, (tx) => {
@@ -58,21 +76,82 @@ function Card({
     return Math.max(0.45, 1 - Math.min(dist, 1) * 0.55);
   });
 
+  const diff = mod(slotIndex - active, totalSlots);
+  const isCenter = diff === 0;
+  const isRight = !isCenter && diff <= Math.floor(totalSlots / 2);
+  const arrowDir = isCenter ? null : isRight ? 'right' : 'left';
+  const clickFn = isCenter ? undefined : isRight ? goNext : goPrev;
+
+  // ── Mobile static path (after all hooks) ──────────────────
+  if (staticRender) {
+    return (
+      <div className={`${styles.card} ${styles.centerCard} ${styles.mobileCard}`}>
+        <div className={styles.cardBanner}>
+          {!logoError ? (
+            <Image
+              src={project.logo}
+              alt={`${project.title} banner`}
+              fill
+              sizes="100vw"
+              className={styles.bannerImg}
+              onError={() => setLogoError(true)}
+            />
+          ) : (
+            <span className={styles.bannerFallback}>{project.title[0]}</span>
+          )}
+        </div>
+        <div className={styles.cardBody}>
+          <span className={styles.cardTagline}>{project.tagline}</span>
+          <h3 className={styles.cardTitle}>{project.title}</h3>
+          <p className={styles.cardDesc}>{project.description}</p>
+          <div className={styles.techRow}>
+            {project.tech.map((t) => (
+              <span key={t} className={styles.techPill}>
+                {t}
+              </span>
+            ))}
+          </div>
+          <a
+            href={project.visit}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.visitBtn}
+          >
+            Visit Project <span className={styles.visitArrow}>&#x2192;</span>
+          </a>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Desktop animated path ──────────────────────────────────
+
   return (
     <motion.div
-      className={styles.card}
+      className={
+        isCenter ? `${styles.card} ${styles.centerCard}` : `${styles.card} ${styles.sideCard}`
+      }
       style={{
         position: 'absolute',
         top: '50%',
         left: 0,
-        width: CARD_W,
+        width: cardWidth,
         x,
         y: '-50%',
         scale,
         opacity,
         transformOrigin: 'center center',
       }}
+      onClick={!isCenter ? clickFn : undefined}
+      onMouseEnter={!isCenter ? onHintMouseEnter : undefined}
+      onMouseLeave={!isCenter ? onHintMouseLeave : undefined}
     >
+      {/* Side card hover hint — JS-controlled, never shown during animation */}
+      {!isCenter && showHint && (
+        <div className={styles.clickHint} aria-hidden="true">
+          {arrowDir === 'left' ? '‹' : '›'}
+        </div>
+      )}
       {/* Banner */}
       <div className={styles.cardBanner}>
         {!logoError ? (
@@ -118,12 +197,36 @@ export default function Projects() {
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
   const [containerWidth, setContainerWidth] = useState(0);
+  const [isIdle, setIsIdle] = useState(true);
+  const [hoveredSlot, setHoveredSlot] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const isMobileRef = useRef(false);
+
+  useEffect(() => {
+    const check = () => {
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
+      isMobileRef.current = mobile;
+    };
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
+  // On mobile reduce card width to fit viewport; keep CARD_W for desktop
+  const mobileCardW =
+    containerWidth > 0 && containerWidth <= 768
+      ? Math.max(Math.min(containerWidth - 32, CARD_W), 280)
+      : CARD_W;
 
   const containerRef = useRef<HTMLDivElement>(null);
   const trackX = useMotionValue(0);
+  const fadeOpacity = useMotionValue(1);
   const animating = useRef(false);
   // cumulative slide count — trackX = -slideCount * UNIT always
   const slideCount = useRef(0);
+  const touchStartX = useRef<number>(0);
+  const touchEndX = useRef<number>(0);
 
   useEffect(() => {
     const measure = () => {
@@ -138,8 +241,26 @@ export default function Projects() {
     (newActive: number, step: 1 | -1) => {
       if (animating.current) return;
       animating.current = true;
+      setIsIdle(false);
+      setHoveredSlot(null);
 
       const target = mod(newActive, total);
+
+      // ── Mobile: fade transition ───────────────────────
+      if (isMobileRef.current) {
+        animate(fadeOpacity, 0, {
+          duration: 0.18,
+          onComplete: () => {
+            setActive(target);
+            animating.current = false;
+            setIsIdle(true);
+            animate(fadeOpacity, 1, { duration: 0.18 });
+          },
+        });
+        return;
+      }
+
+      // ── Desktop: slide transition ─────────────────────
       slideCount.current += step;
       const targetX = -slideCount.current * UNIT;
 
@@ -156,14 +277,31 @@ export default function Projects() {
           }
           setActive(target);
           animating.current = false;
+          setIsIdle(true);
         },
       });
     },
-    [trackX],
+    [trackX, fadeOpacity],
   );
 
   const goNext = useCallback(() => goTo(active + 1, 1), [active, goTo]);
   const goPrev = useCallback(() => goTo(active - 1, -1), [active, goTo]);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    const diff = touchStartX.current - touchEndX.current;
+    const minSwipeDistance = 50;
+    if (diff > minSwipeDistance) goNext();
+    if (diff < -minSwipeDistance) goPrev();
+  };
 
   useEffect(() => {
     if (paused) return;
@@ -199,68 +337,64 @@ export default function Projects() {
       </motion.div>
 
       <div className={styles.carouselOuter}>
-        <button
-          className={`${styles.arrowBtn} ${styles.arrowBtnLeft}`}
-          onClick={goPrev}
-          aria-label="Previous project"
+        <div
+          ref={containerRef}
+          className={styles.carouselViewport}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
         >
-          <svg
-            className={styles.arrowSvg}
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            style={{ display: 'block', flexShrink: 0 }}
-          >
-            <polyline
-              points="15 18 9 12 15 6"
-              stroke="#ffffff"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>
-
-        <div ref={containerRef} className={styles.carouselViewport}>
           {containerWidth > 0 &&
-            projects.map((project, i) => (
-              <Card
-                key={i}
-                project={project}
-                slotIndex={i}
-                trackX={trackX}
-                containerWidth={containerWidth}
-                totalSlots={total}
-              />
+            (isMobile ? (
+              // ── Mobile: single card with fade transition ──
+              <motion.div className={styles.mobileCardWrap} style={{ opacity: fadeOpacity }}>
+                <Card
+                  key={`mobile-${active}`}
+                  project={projects[active]}
+                  slotIndex={active}
+                  trackX={trackX}
+                  containerWidth={containerWidth}
+                  totalSlots={total}
+                  active={active}
+                  goNext={goNext}
+                  goPrev={goPrev}
+                  showHint={false}
+                  onHintMouseEnter={() => {}}
+                  onHintMouseLeave={() => {}}
+                  cardWidth={mobileCardW}
+                  staticRender
+                />
+              </motion.div>
+            ) : (
+              // ── Desktop: full 3-card carousel ─────────────
+              projects.map((project, i) => {
+                const diff = mod(i - active, total);
+                const isCenter = diff === 0;
+                const isRight = !isCenter && diff <= Math.floor(total / 2);
+                const slotDir = isCenter ? null : isRight ? 'right' : 'left';
+                return (
+                  <Card
+                    key={i}
+                    project={project}
+                    slotIndex={i}
+                    trackX={trackX}
+                    containerWidth={containerWidth}
+                    totalSlots={total}
+                    active={active}
+                    goNext={goNext}
+                    goPrev={goPrev}
+                    showHint={isIdle && hoveredSlot === slotDir}
+                    onHintMouseEnter={() => slotDir && setHoveredSlot(slotDir)}
+                    onHintMouseLeave={() => setHoveredSlot(null)}
+                    cardWidth={mobileCardW}
+                  />
+                );
+              })
             ))}
         </div>
-
-        <button
-          className={`${styles.arrowBtn} ${styles.arrowBtnRight}`}
-          onClick={goNext}
-          aria-label="Next project"
-        >
-          <svg
-            className={styles.arrowSvg}
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            style={{ display: 'block', flexShrink: 0 }}
-          >
-            <polyline
-              points="9 18 15 12 9 6"
-              stroke="#ffffff"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>
       </div>
+
+      <p className={styles.swipeHint}>&#8592; Swipe to explore &#8594;</p>
 
       <div className={styles.dots}>
         {projects.map((_, i) => (
