@@ -131,6 +131,18 @@
   background: rgba(125, 211, 252, 0.06);
 }
 
+/* Tablet */
+@media (max-width: 1024px) {
+  .navbar {
+    padding: 0 3vw;
+  }
+
+  .navLinks {
+    gap: 1.4rem;
+  }
+}
+
+/* Mobile */
 @media (max-width: 768px) {
   .navLinks {
     display: none;
@@ -138,5 +150,22 @@
 
   .hamburger {
     display: flex;
+  }
+
+  .mobileMenu li a {
+    padding: 1rem 5vw;
+    font-size: 1.05rem;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+  .brand {
+    font-size: 0.95rem;
+  }
+
+  .mobileMenu li a {
+    padding: 1.1rem 5vw;
+    font-size: 1rem;
   }
 }

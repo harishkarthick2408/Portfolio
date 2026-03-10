@@ -426,6 +426,22 @@
 /* ══════════════════════════════════════════════════════════════
    RESPONSIVE
    ══════════════════════════════════════════════════════════════ */
+/* Tablet */
+@media (max-width: 1024px) {
+  .container {
+    gap: 2.5rem;
+  }
+
+  .gifFloat {
+    max-width: 380px;
+  }
+
+  .section {
+    padding: 70px 1.5rem 90px;
+  }
+}
+
+/* Mobile */
 @media (max-width: 768px) {
   .container {
     grid-template-columns: 1fr;
@@ -436,11 +452,46 @@
     max-width: 280px;
   }
 
+  .gifHeading {
+    font-size: 22px;
+  }
+
+  .gifSubtext {
+    font-size: 14px;
+  }
+
   .card {
     padding: 1.25rem 1rem;
   }
 
   .section {
     padding: 60px 1.25rem 80px;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+  .section {
+    padding: 60px 1rem 70px;
+  }
+
+  .gifFloat {
+    max-width: 220px;
+  }
+
+  .gifHeading {
+    font-size: 18px;
+  }
+
+  .card {
+    padding: 1rem 0.85rem;
+  }
+
+  .cardTitle {
+    font-size: 1.15rem !important;
+  }
+
+  .input {
+    font-size: 13px;
   }
 }

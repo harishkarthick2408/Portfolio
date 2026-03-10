@@ -223,10 +223,36 @@
 }
 
 /* ─── RESPONSIVE ─────────────────────────────────────── */
-@media (max-width: 960px) {
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .section {
+    padding: 80px 1.5rem;
+  }
+
+  .container {
+    gap: 3rem;
+  }
+
+  .imageWrapper {
+    width: 300px;
+  }
+
+  .imageFrame {
+    width: 300px;
+    height: 300px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .section {
+    padding: 60px 1.25rem;
+  }
+
   .container {
     flex-direction: column;
-    gap: 3rem;
+    gap: 2.5rem;
   }
 
   .imageWrapper {
@@ -235,16 +261,42 @@
 
   .imageFrame {
     width: 100%;
-    height: 340px;
-  }
-}
-
-@media (max-width: 640px) {
-  .section {
-    padding: 70px 1.2rem;
+    height: 280px;
   }
 
   .highlights {
-    gap: 1.2rem;
+    gap: 1.5rem;
+  }
+
+  .collegeName {
+    font-size: 1.4rem;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+  .section {
+    padding: 60px 1rem;
+  }
+
+  .highlights {
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .highlightNum {
+    font-size: 1.4rem;
+  }
+
+  .imageFrame {
+    height: 240px;
+  }
+
+  .collegeName {
+    font-size: 1.2rem;
+  }
+
+  .desc {
+    font-size: 0.9rem;
   }
 }
