@@ -5,4 +5,7 @@ export type Project = {
   description: string;
   tech: string[];
   visit: string;
+  bannerFit?: 'cover' | 'contain';
+  bannerScale?: number;
+  bannerPadding?: string;
 };
