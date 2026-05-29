@@ -72,7 +72,7 @@ export default function About() {
           </motion.p>
 
           <motion.a
-            href="https://drive.google.com/file/d/1LEnKwSIY_9NBPwN5iMZUaXqrTP2LEQjf/view?usp=drive_link"
+            href="https://drive.google.com/file/d/1k7NDsMOGFTXH-UGYXxDsH_S0U3YZMt5w/view?usp=sharing"
             target="_blank"
             rel="noopener noreferrer"
             className={styles.resumeBtn}
